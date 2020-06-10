@@ -98,6 +98,7 @@ func main() {
 		config.ImageMagick.Wsl)
 	if err != nil {
 		log.Panicf("error getting histogram: %v", err)
+		return
 	}
 	result := make(map[string]int64)
 	for col, weight := range histogram {
@@ -139,12 +140,7 @@ func getHistogram(convert, resize, remap string, colors int, file string, timeou
 	cmd.Stdout = &out
 
 	if err := cmd.Run(); err != nil {
-		switch e := err.(type) {
-		case *exec.ExitError:
-			if e.ProcessState.ExitCode() != 1 {
-				return result, emperror.Wrapf(err, "error executing (%s %s): %v - %v", cmdfile, cmdparam, out.String(), err)
-			}
-		}
+		return result, emperror.Wrapf(err, "error executing (%s %s): %v - %v", cmdfile, cmdparam, out.String(), err)
 	}
 
 	data := out.String()
