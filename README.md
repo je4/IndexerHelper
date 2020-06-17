@@ -5,7 +5,7 @@ basierend auf einer Colormap, welche im Konfigurationsfile definiert wird.
 ## Installation
 
     go get gitlab.switch.ch/memoriav/memobase-2020/services/histogram
-    go build gitlab.switch.ch/memoriav/memobase-2020/services/histogram
+    go build gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
 
 ## Start:
 

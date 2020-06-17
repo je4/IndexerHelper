@@ -27,16 +27,17 @@ type ConfigImageMagick struct {
 }
 
 type Config struct {
-	Logfile     string
-	Loglevel    string
-	AccessLog   string
-	CertPEM     string
-	KeyPEM      string
-	Addr        string
-	JwtKey      string
-	JwtAlg      []string
-	ImageMagick ConfigImageMagick
-	Colormap    map[string]string
+	Logfile         string
+	Loglevel        string
+	AccessLog       string
+	CertPEM         string
+	KeyPEM          string
+	Addr            string
+	HistogramPrefix string
+	JwtKey          string
+	JwtAlg          []string
+	ImageMagick     ConfigImageMagick
+	Colormap        map[string]string
 }
 
 func LoadConfig(filepath string) Config {
