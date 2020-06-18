@@ -4,12 +4,26 @@ accesslog = "" # http access log file
 addr = "localhost:83"
 #certpem = "" # tls client certificate file in PEM format
 #keypem = "" # tls client key file in PEM format
-histogramprefix = "histogram"
+wsl = true  # true, if executable is within linux subsystem on windows
 
 [ImageMagick]
-    #identify = "/usr/bin/identify"
+    identify = "/usr/bin/identify"
     convert = "/usr/bin/convert"
-    wsl = true  # true, if executable is within linux subsystem on windows
+
+[FFMPEG]
+    ffmpeg = "/usr/local/bin/ffmpeg2"
+    ffprobe = "/usr/local/bin/ffprobe2"
+
+[ValidateImage]
+    prefix = "validateimage"
+    timeout = "10s"
+
+[ValidateAV]
+    prefix = "validateav"
+    timeout = "10s"
+
+[Histogram]
+    prefix = "histogram"
     timeout = "10s"
     remap = "color.png" # das Bild mit der Zielfarbpalette. Wird erzeugt, falls nicht vorhanden. (Schreibrechte beachten)
     colors = 10  # Anzahl der Farben im Histogramm

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/histogram"
 	"gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/service"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -40,28 +39,15 @@ func main() {
 	log, lf := service.CreateLogger("indexer", config.Logfile, config.Loglevel)
 	defer lf.Close()
 
-	var accesslog io.Writer
-	if config.AccessLog == "" {
-		accesslog = os.Stdout
-	} else {
-		f, err := os.OpenFile(config.AccessLog, os.O_WRONLY|os.O_CREATE, 0755)
-		if err != nil {
-			log.Panicf("cannot open file %s: %v", config.AccessLog, err)
-			return
-		}
-		defer f.Close()
-		accesslog = f
-	}
-	fmt.Sprintf("%v", accesslog)
 
 	hist, err := histogram.NewHistogram(
 		config.ImageMagick.Convert,
-		config.ImageMagick.Resize,
-		config.ImageMagick.Remap,
-		config.Colormap,
-		config.ImageMagick.Colors,
-		config.ImageMagick.Timeout.Duration,
-		config.ImageMagick.Wsl)
+		config.Histogram.Resize,
+		config.Histogram.Remap,
+		config.Histogram.Colormap,
+		config.Histogram.Colors,
+		config.Histogram.Timeout.Duration,
+		config.Wsl)
 
 	// if necessary create a colormap image
 	result, err := hist.Exec(*imgFile)

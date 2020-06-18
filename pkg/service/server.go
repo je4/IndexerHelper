@@ -11,6 +11,9 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
+	"regexp"
+	"runtime"
 )
 
 type Server struct {
@@ -20,6 +23,7 @@ type Server struct {
 	log       *logging.Logger
 	accesslog io.Writer
 	services  map[string]Service
+	wsl       bool
 }
 
 func NewServer(
@@ -27,6 +31,7 @@ func NewServer(
 	log *logging.Logger,
 	accesslog io.Writer,
 	srvs map[string]Service,
+	wsl bool,
 ) (*Server, error) {
 	host, port, err := net.SplitHostPort(addr)
 	if err != nil {
@@ -41,6 +46,7 @@ func NewServer(
 		log:       log,
 		accesslog: accesslog,
 		services:  srvs,
+		wsl:       wsl,
 	}
 	return srv, nil
 }
@@ -48,24 +54,58 @@ func NewServer(
 func (s *Server) ListenAndServe(cert, key string) error {
 	router := mux.NewRouter()
 
-	for prefix, serv := range s.services {
+	srvRegexp := regexp.MustCompile(`^/([^/]+)/(.+)$`)
+	router.MatcherFunc(func(r *http.Request, rm *mux.RouteMatch) bool {
+		matches := srvRegexp.FindSubmatch([]byte(r.URL.Path))
+		if len(matches) == 0 {
+			return false
+		}
+		rm.Vars = map[string]string{}
+		prefix := string(matches[1])
+		rm.Vars["prefix"] = prefix
+		rm.Vars["path"] = string(matches[2])
+		// check whether prefix is known
+		for key, _ := range s.services {
+			if key == prefix {
+				return true
+			}
+		}
+		return false
+	}).HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
 
-		router.HandleFunc(fmt.Sprintf("/%s/[path]", prefix), func(writer http.ResponseWriter, request *http.Request) {
-			vars := mux.Vars(request)
-			path, ok := vars["path"]
-			if !ok {
-				s.DoPanicf(writer, http.StatusNotFound, "invalid url %s. no path given", request.URL.String())
-				return
-			}
-			result, err := serv.Exec(path)
-			if err != nil {
-				s.DoPanicf(writer, http.StatusInternalServerError, "cannot create histogram of %s", path)
-				return
-			}
-			jw := json.NewEncoder(writer)
-			jw.Encode(result)
-		}).Methods("GET")
-	}
+		vars := mux.Vars(request)
+		prefix, ok := vars["prefix"]
+		if !ok {
+			s.DoPanicf(writer, http.StatusNotFound, "invalid url %s. no path given", request.URL.String())
+			return
+		}
+		serv, ok := s.services[prefix]
+		if !ok {
+			s.DoPanicf(writer, http.StatusNotFound, "invalid url %s. wrong prefix %s", request.URL.String(), prefix)
+			return
+		}
+		path, ok := vars["path"]
+		if !ok {
+			s.DoPanicf(writer, http.StatusNotFound, "invalid url %s. no path given", request.URL.String())
+			return
+		}
+		if runtime.GOOS != "windows" || (runtime.GOOS == "windows" && s.wsl) {
+			path = `/` + path
+		}
+		p, err := url.QueryUnescape(path)
+		if err != nil {
+			s.DoPanicf(writer, http.StatusInternalServerError, "cannot unescape path %s: %v", path, err)
+			return
+		}
+		result, err := serv.Exec(p)
+		if err != nil {
+			s.DoPanicf(writer, http.StatusInternalServerError, "cannot create %s of %s: %v", prefix, path, err)
+			return
+		}
+		jw := json.NewEncoder(writer)
+		jw.Encode(result)
+	}).Methods("GET")
 
 	loggedRouter := handlers.LoggingHandler(s.accesslog, router)
 	addr := net.JoinHostPort(s.host, s.port)

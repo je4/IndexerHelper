@@ -60,9 +60,7 @@ func NewHistogram(convert, resize, remap string, colormap map[string]string, col
 
 	return h, nil
 }
-func (h *Histogram) GetName() string {
-	return "histogram"
-}
+
 func (h *Histogram) Exec(file string, args ...interface{}) (interface{}, error) {
 	colors := make(map[string]int64)
 

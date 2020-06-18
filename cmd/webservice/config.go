@@ -55,7 +55,7 @@ type Config struct {
 	JwtKey        string
 	JwtAlg        []string
 	ImageMagick   ConfigImageMagick
-	ConfigFFMPEG  ConfigFFMPEG
+	FFMPEG        ConfigFFMPEG
 	Histogram     ConfigHistogram
 	ValidateImage ConfigValidateImage
 	ValidateAV    ConfigValidateAV

@@ -1,0 +1,87 @@
+Image: parliamentdefect.jpg
+  Format: JPEG (Joint Photographic Experts Group JFIF format)
+  Mime type: image/jpeg
+  Class: DirectClass
+  Geometry: 2480x1394+0+0
+  Resolution: 150x150
+  Print size: 16.5333x9.29333
+  Units: PixelsPerInch
+  Type: TrueColor
+  Endianess: Undefined
+  Colorspace: sRGB
+  Depth: 8-bit
+  Channel depth:
+    red: 8-bit
+    green: 8-bit
+    blue: 8-bit
+  Channel statistics:
+    Pixels: 3457120
+    Red:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 99.1014 (0.388633)
+      standard deviation: 62.826 (0.246376)
+      kurtosis: -0.177222
+      skewness: 1.00838
+      entropy: 0.922141
+    Green:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 84.6732 (0.332052)
+      standard deviation: 58.3896 (0.228979)
+      kurtosis: 0.773212
+      skewness: 1.30255
+      entropy: 0.893161
+    Blue:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 78.7253 (0.308727)
+      standard deviation: 56.2547 (0.220607)
+      kurtosis: 1.76577
+      skewness: 1.60893
+      entropy: 0.882406
+  Image statistics:
+    Overall:
+      min: 0 (0)
+      max: 255 (1)
+      mean: 87.5 (0.343137)
+      standard deviation: 59.2201 (0.232235)
+      kurtosis: 0.767738
+      skewness: 1.319
+      entropy: 0.899236
+  Rendering intent: Perceptual
+  Gamma: 0.454545
+  Chromaticity:
+    red primary: (0.64,0.33)
+    green primary: (0.3,0.6)
+    blue primary: (0.15,0.06)
+    white point: (0.3127,0.329)
+  Background color: white
+  Border color: srgb(223,223,223)
+  Matte color: grey74
+  Transparent color: black
+  Interlace: None
+  Intensity: Undefined
+  Compose: Over
+  Page geometry: 2480x1394+0+0
+  Dispose: Undefined
+  Iterations: 0
+  Compression: JPEG
+  Quality: 90
+  Orientation: Undefined
+  Properties:
+    date:create: 2020-06-18T12:11:31+02:00
+    date:modify: 2020-06-18T12:11:31+02:00
+    jpeg:colorspace: 2
+    jpeg:sampling-factor: 2x2,1x1,1x1
+    signature: 0c81f2574d32dda8581b104c2f33c751ab2b9e43ad2335dcc195acd95df73d7b
+  Artifacts:
+    filename: parliamentdefect.jpg
+    verbose: true
+  Tainted: False
+  Filesize: 988KB
+  Number pixels: 3.457M
+  Pixels per second: 69.14MB
+  User time: 0.040u
+  Elapsed time: 0:01.049
+  Version: ImageMagick 6.9.7-4 Q16 x86_64 20170114 http://www.imagemagick.org
