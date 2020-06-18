@@ -80,8 +80,13 @@ func (h *Histogram) Exec(file string, args ...interface{}) (interface{}, error) 
 	cmd.Stdout = &out
 
 	if err := cmd.Run(); err != nil {
-		outStr := out.String()
-		return colors, emperror.Wrapf(err, "error executing (%s %s): %v", cmdfile, cmdparam, outStr)
+		exiterr, ok := err.(*exec.ExitError)
+		if ok && exiterr.ExitCode() == 1 {
+		} else {
+
+			outStr := out.String()
+			return colors, emperror.Wrapf(err, "error executing (%s %s): %v", cmdfile, cmdparam, outStr)
+		}
 	}
 
 	data := out.String()

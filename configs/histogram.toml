@@ -29,7 +29,7 @@ wsl = true  # true, if executable is within linux subsystem on windows
     colors = 10  # Anzahl der Farben im Histogramm
     resize = "100x100!"
 
-[colormap]
+[histogram.colormap]
     AliceBlue = "#F0F8FE"
     AntiqueWhite = "#FAEBD7"
     Aqua = "#00FFFF"
