@@ -11,7 +11,6 @@ WORKDIR /app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
-RUN chmod +x /usr/bin/histogram
 RUN useradd -m appuser
 
 RUN apt-get update && \

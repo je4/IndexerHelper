@@ -59,10 +59,10 @@ histogram:test:lint:
     variables:
         BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
 
-histogram:test:unit:
-    extends: .test:unit
-    variables:
-        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
+# histogram:test:unit:
+#    extends: .test:unit
+#    variables:
+#        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
 
 histogram:test:race:
     extends: .test:race
@@ -79,10 +79,10 @@ webservice:test:lint:
     variables:
         BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/webservice
 
-webservice:test:unit:
-    extends: .test:unit
-    variables:
-        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/webservice
+# webservice:test:unit:
+#    extends: .test:unit
+#    variables:
+#        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/webservice
 
 webservice:test:race:
     extends: .test:race
