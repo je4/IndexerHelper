@@ -7,8 +7,10 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app -a gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/webservice
 
 FROM perl:5.30-slim-buster
-RUN useradd -m appuser
 WORKDIR /app
+RUN groupadd -r appuser && \
+chmod -R 770 /app && \
+chown -R :appuser /app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
@@ -21,7 +23,7 @@ apt-get clean
 # ADD convert /usr/bin/
 # ADD identify /usr/bin/
 
-USER appuser
+USER appuser:appuser
 
 EXPOSE 8083
 
