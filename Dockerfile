@@ -1,5 +1,5 @@
 FROM golang:1.14 as builder
-RUN adduser --system appuser
+RUN useradd -m appuser
 
 WORKDIR $GOPATH/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
 COPY . .
@@ -11,7 +11,6 @@ WORKDIR /app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
-RUN useradd -m appuser
 
 RUN apt-get update && \
 apt-get install -y exiftool ffmpeg imagemagick && \
