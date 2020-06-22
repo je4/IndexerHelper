@@ -12,7 +12,6 @@ default:
     - mkdir -p /go/src/gitlab.switch.ch/${CI_PROJECT_NAMESPACE}
     - ln -s $CI_PROJECT_DIR /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
     - cd /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
-    - go get
 
 .test:lint:
     stage: test
