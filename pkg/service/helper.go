@@ -5,6 +5,9 @@ import (
 	"github.com/op/go-logging"
 	"image/color"
 	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 )
 
 var _logformat = logging.MustStringFormatter(
@@ -58,4 +61,12 @@ func ParseHexColor(s string) (c color.RGBA, err error) {
 
 	}
 	return
+}
+
+var charRegexp = regexp.MustCompile("^/?([a-zA-Z]):([^:]+)$")
+func Path2Wsl(file string) (string) {
+	if matches := charRegexp.FindStringSubmatch(file); matches != nil {
+		file = fmt.Sprintf("/mnt/%s/%s", strings.ToLower(matches[1]), filepath.ToSlash(matches[2]))
+	}
+	return file
 }

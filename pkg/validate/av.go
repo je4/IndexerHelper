@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/goph/emperror"
 	"github.com/op/go-logging"
+	"gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/service"
 	"os/exec"
 	"strings"
 	"time"
@@ -30,6 +31,10 @@ func NewValidateAV(ffmpeg string, timeout time.Duration, wsl bool, log *logging.
 
 func (h *ValidateAV) Exec(file string, args ...interface{}) (interface{}, error) {
 	colors := make(map[string]int64)
+
+	if h.wsl {
+		file = service.Path2Wsl(file)
+	}
 
 	cmdparam := []string{"-v", "warning", "-i", file, "-f", "null", "-"}
 	cmdfile := h.ffmpeg

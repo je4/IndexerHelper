@@ -64,6 +64,9 @@ func NewHistogram(convert, resize, remap string, colormap map[string]string, col
 func (h *Histogram) Exec(file string, args ...interface{}) (interface{}, error) {
 	colors := make(map[string]float64)
 
+	if h.wsl {
+		file = service.Path2Wsl(file)
+	}
 	cmdparam := []string{file, "-resize", h.resize, "-dither", "Riemersma", "-colors", fmt.Sprintf("%d", h.colors), "+dither", "-remap", h.remap, "-format", `%c`, "histogram:info:"}
 	cmdfile := h.convert
 	if h.wsl {
