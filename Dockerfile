@@ -24,15 +24,15 @@ COPY --from=histogram_builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/se
 RUN chmod +x /usr/bin/histogram
 
 RUN apt-get update && \
-apt-get install -y exiftool && \
+apt-get install -y exiftool ffmpeg imagemagick && \
 apt-get autoremove -y && \
 apt-get clean
-ADD ffprobe /usr/bin/
-ADD convert /usr/bin/
-ADD identify /usr/bin/
+# ADD ffprobe /usr/bin/
+# ADD convert /usr/bin/
+# ADD identify /usr/bin/
 
 USER appuser
 
-EXPOSE 81
+EXPOSE 8083
 
 ENTRYPOINT ["/app/app"]

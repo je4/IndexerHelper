@@ -99,12 +99,12 @@ webservice:test:build:
     image: docker:stable
     services:
         - docker:dind
-    before_script:
-        - apk update && apk add curl
+    # before_script:
+    #     - apk update && apk add curl
     script:
-        - 'curl --location --output ffprobe --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN" "https://gitlab.switch.ch/api/v4/projects/937/jobs/artifacts/master/raw/ffmpeg_build/bin/ffprobe?job=snapshot"'
-        - 'curl --location --output convert --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN" "https://gitlab.switch.ch/api/v4/projects/939/jobs/artifacts/master/raw/im_build/bin/convert?job=v6_9_11"'
-        - 'curl --location --output identify --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN" "https://gitlab.switch.ch/api/v4/projects/939/jobs/artifacts/master/raw/im_build/bin/identify?job=v6_9_11"'
+        # - 'curl --location --output ffprobe --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN" "https://gitlab.switch.ch/api/v4/projects/937/jobs/artifacts/master/raw/ffmpeg_build/bin/ffprobe?job=snapshot"'
+        # - 'curl --location --output convert --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN" "https://gitlab.switch.ch/api/v4/projects/939/jobs/artifacts/master/raw/im_build/bin/convert?job=v6_9_11"'
+        # - 'curl --location --output identify --header "PRIVATE-TOKEN: $API_ACCESS_TOKEN" "https://gitlab.switch.ch/api/v4/projects/939/jobs/artifacts/master/raw/im_build/bin/identify?job=v6_9_11"'
         - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" "$REGISTRY"
         - docker build --pull -t "$IMAGE_TAG" -f "$DOCKERFILE" .
         - docker push "$IMAGE_TAG"
