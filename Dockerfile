@@ -21,6 +21,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=histogram_builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/histogram /usr/bin
+RUN chmod +x /usr/bin/histogram
 
 RUN apt-get update && \
 apt-get install -y exiftool && \
@@ -31,9 +32,6 @@ ADD convert /usr/bin/
 ADD identify /usr/bin/
 
 USER appuser
-
-ADD web/static/ /app/static
-ADD web/template /app/web/template
 
 EXPOSE 81
 
