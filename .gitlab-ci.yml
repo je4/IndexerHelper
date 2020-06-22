@@ -4,56 +4,95 @@ stages:
 
 variables:
     DOCKER_TLS_CERTDIR: ""
-    PKG_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/webservice
 
 default:
     image: golang:1.14
 
 .test_setup: &test_setup
-    - mkdir -p /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
+    - mkdir -p /go/src/gitlab.switch.ch/${CI_PROJECT_NAMESPACE}
     - ln -s $CI_PROJECT_DIR /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
     - cd /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
 
-indexer:lint:
+.test:lint:
     stage: test
     tags: [mbr]
     before_script:
         - *test_setup
         - go get -u golang.org/x/lint/golint
     script:
-        - golint -set_exit_status $PKG_PATH
+        - golint -set_exit_status $BIN_PATH
     allow_failure: true
 
-indexer:unit:
+.test:unit:
     stage: test
     tags: [mbr]
     before_script: [*test_setup]
     script:
-        - go test -short $PKG_PATH
+        - go test -short $BIN_PATH
     allow_failure: true
 
-indexer:race:
+.test:race:
     stage: test
     tags: [mbr]
     before_script: [*test_setup]
     script:
-        - go test -race -short $PKG_PATH
+        - go test -race -short $BIN_PATH
     allow_failure: true
 
-#indexer:msan:
+#test:msan:
 #    stage: test
 #    tags: [mbr]
 #    before_script: [*test_setup]
 #    script:
-#        - go test -msan -short $PKG_PATH
+#        - go test -msan -short $BIN_PATH
 #    allow_failure: true
 
-indexer:build:
+.test:build:
     stage: test
     tags: [mbr]
     before_script: [*test_setup]
     script:
-        - go build $PKG_PATH
+        - go build $BIN_PATH
+
+histogram:test:lint:
+    extends: .test:lint
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
+
+histogram:test:unit:
+    extends: .test:unit
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
+
+histogram:test:race:
+    extends: .test:race
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
+
+histogram:test:build:
+    extends: .test:build
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/histogram
+
+webservice:test:lint:
+    extends: .test:lint
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/webservice/cmd/webservice
+
+webservice:test:unit:
+    extends: .test:unit
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/webservice/cmd/webservice
+
+webservice:test:race:
+    extends: .test:race
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/webservice/cmd/webservice
+
+webservice:test:build:
+    extends: .test:build
+    variables:
+        BIN_PATH: gitlab.switch.ch/memoriav/memobase-2020/services/webservice/cmd/webservice
 
 .build-image:
     stage: publish
@@ -71,7 +110,7 @@ indexer:build:
         - docker push "$IMAGE_TAG"
         - docker logout
 
-indexer:build-tagged-image:
+indexerhelper:build-tagged-image:
     extends: .build-image
     variables:
         IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_COMMIT_TAG"
@@ -82,7 +121,7 @@ indexer:build-tagged-image:
     only:
         - tags
 
-indexer:build-latest-image:
+indexerhelper:build-latest-image:
     extends: .build-image
     variables:
         IMAGE_TAG: "$CI_REGISTRY_IMAGE:latest"
@@ -93,7 +132,7 @@ indexer:build-latest-image:
     only:
         - master
 
-indexer:build-feature-branch-image:
+indexerhelper:build-feature-branch-image:
     extends: .build-image
     variables:
         IMAGE_TAG: "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
