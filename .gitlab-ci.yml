@@ -10,7 +10,7 @@ default:
     image: golang:1.14
 
 .test_setup: &test_setup
-    - mkdir -p /go/src/github.com/je4
+    - mkdir -p /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
     - ln -s $CI_PROJECT_DIR /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
     - cd /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
 
