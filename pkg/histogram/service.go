@@ -62,7 +62,7 @@ func NewHistogram(convert, resize, remap string, colormap map[string]string, col
 }
 
 func (h *Histogram) Exec(file string, args ...interface{}) (interface{}, error) {
-	colors := make(map[string]int64)
+	colors := make(map[string]float64)
 
 	cmdparam := []string{file, "-resize", h.resize, "-dither", "Riemersma", "-colors", fmt.Sprintf("%d", h.colors), "+dither", "-remap", h.remap, "-format", `%c`, "histogram:info:"}
 	cmdfile := h.convert
@@ -103,16 +103,16 @@ func (h *Histogram) Exec(file string, args ...interface{}) (interface{}, error) 
 		col := matches[2]
 		countstr := matches[1]
 		if _, ok := colors[col]; !ok {
-			colors[col] = 0
+			colors[col] = 0.0
 		}
 		count, err := strconv.ParseInt(countstr, 10, 64)
 		if err != nil {
 			return colors, emperror.Wrapf(err, "cannot parse number %s in line %s", countstr, line)
 		}
-		colors[col] += count
+		colors[col] += float64(count)/float64(10000)
 	}
 
-	result := make(map[string]int64)
+	result := make(map[string]float64)
 	for col, weight := range colors {
 		ok := false
 		for name, hex := range h.colormap {

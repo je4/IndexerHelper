@@ -27,6 +27,8 @@ wsl = true  # true, if executable is within linux subsystem on windows
     timeout = "10s"
     remap = "color.png" # das Bild mit der Zielfarbpalette. Wird erzeugt, falls nicht vorhanden. (Schreibrechte beachten)
     colors = 10  # Anzahl der Farben im Histogramm
+    maxvalue = 10000
+    params = "[[path]] -resize 100x100! -dither Riemersma -colors 10 +dither -remap color.png -format %c histogram:info:"
     resize = "100x100!"
 
 [histogram.colormap]
