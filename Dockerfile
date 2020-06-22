@@ -20,21 +20,19 @@ WORKDIR /app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=histogram_builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /usr/bin
+COPY --from=histogram_builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/histogram /usr/bin
+RUN chmod +x /usr/bin/histogram
 
 RUN apt-get update && \
-apt-get install -y exiftool && \
+apt-get install -y exiftool ffmpeg imagemagick && \
 apt-get autoremove -y && \
 apt-get clean
-ADD ffprobe /usr/bin/
-ADD convert /usr/bin/
-ADD identify /usr/bin/
+# ADD ffprobe /usr/bin/
+# ADD convert /usr/bin/
+# ADD identify /usr/bin/
 
 USER appuser
 
-ADD web/static/ /app/static
-ADD web/template /app/web/template
-
-EXPOSE 81
+EXPOSE 8083
 
 ENTRYPOINT ["/app/app"]

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: indexer-helper-deployment
+  namespace: memobase
+  labels:
+    app: indexer-helper-app
+spec:
+  selector:
+    matchLabels:
+      app: indexer-helper-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: indexer-helper-app
+        tier: web
+    spec:
+      containers:
+          - name: indexer-helper-container
+            image: cr.gitlab.switch.ch/memoriav/memobase-2020/services/histogram:latest
+            ports:
+              - containerPort: 8083
+                name: http
+                protocol: TCP
+            imagePullPolicy: Always
+            volumeMounts:
+              - name: config
+                mountPath: /app/configs
+            command: ["/app/app", "-cfg", "/app/configs/histogram.toml"]
+      restartPolicy: Always
+      volumes:
+          - name: config
+            configMap:
+                name: indexer-helper-config
