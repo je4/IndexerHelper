@@ -1,5 +1,5 @@
 FROM golang:1.14 as builder
-RUN useradd -m appuser
+RUN adduser --system appuser
 
 WORKDIR $GOPATH/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram
 COPY . .
@@ -7,6 +7,7 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app -a gitlab.switch.ch/memoriav/memobase-2020/services/histogram/cmd/webservice
 
 FROM perl:5.30-slim-buster
+RUN useradd -m appuser
 WORKDIR /app
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
