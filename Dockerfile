@@ -15,6 +15,7 @@ chown -R :appuser /colormap
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
+ADD histogram.toml /app/configs/
 
 RUN apt-get update && \
 apt-get install -y exiftool ffmpeg imagemagick && \
