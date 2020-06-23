@@ -8,10 +8,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app -a gitlab.switch.c
 
 FROM perl:5.30-slim-buster
 WORKDIR /app
-RUN groupadd -r appuser && \
-mkdir /colormap && \
-chmod -R 770 /colormap && \
-chown -R :appuser /colormap
+RUN mkdir /app/colormap && \
+chmod -R 777 /app/colormap
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/gitlab.switch.ch/memoriav/memobase-2020/services/histogram/bin/app /app
 COPY --from=builder /etc/passwd /etc/passwd
@@ -24,7 +22,7 @@ apt-get clean
 # ADD convert /usr/bin/
 # ADD identify /usr/bin/
 
-USER appuser:appuser
+USER appuser
 
 EXPOSE 8083
 
