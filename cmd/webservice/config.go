@@ -26,6 +26,10 @@ type ConfigFFMPEG struct {
 	FFPROBE string
 }
 
+type ConfigExiftool struct {
+	Exiftool string
+}
+
 type ConfigHistogram struct {
 	Prefix   string
 	Colormap map[string]string
@@ -45,6 +49,12 @@ type ConfigValidateAV struct {
 	Timeout duration
 }
 
+type ConfigExif struct {
+	Prefix  string
+	Timeout duration
+	Params  string
+}
+
 type Config struct {
 	Logfile       string
 	Loglevel      string
@@ -56,9 +66,11 @@ type Config struct {
 	JwtAlg        []string
 	ImageMagick   ConfigImageMagick
 	FFMPEG        ConfigFFMPEG
+	Exiftool      ConfigExiftool
 	Histogram     ConfigHistogram
 	ValidateImage ConfigValidateImage
 	ValidateAV    ConfigValidateAV
+	Exif          ConfigExif
 	Wsl           bool
 }
 

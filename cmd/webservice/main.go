@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	exif2 "gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/exif"
 	"gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/histogram"
 	"gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/service"
 	"gitlab.switch.ch/memoriav/memobase-2020/services/histogram/pkg/validate"
@@ -69,6 +70,17 @@ func main() {
 		return
 	}
 
+	exif, err := exif2.NewExif(
+		config.Exiftool.Exiftool,
+		config.Exif.Params,
+		config.Exif.Timeout.Duration,
+		config.Wsl,
+		log)
+	if err != nil {
+		log.Fatalf("cannot initialize Exif: %v", err)
+		return
+	}
+
 	hist, err := histogram.NewHistogram(
 		config.ImageMagick.Convert,
 		config.Histogram.Resize,
@@ -90,6 +102,7 @@ func main() {
 			config.Histogram.Prefix:     hist,
 			config.ValidateImage.Prefix: imgval,
 			config.ValidateAV.Prefix:    avval,
+			config.Exif.Prefix:          exif,
 		},
 		config.Wsl,
 	)
