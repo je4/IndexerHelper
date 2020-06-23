@@ -9,6 +9,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/app -a gitlab.switch.c
 FROM perl:5.30-slim-buster
 WORKDIR /app
 RUN groupadd -r appuser && \
+mkdir /colormap && \
 chmod -R 770 /colormap && \
 chown -R :appuser /colormap
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
