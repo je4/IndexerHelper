@@ -25,11 +25,16 @@ spec:
                 protocol: TCP
             imagePullPolicy: Always
             volumeMounts:
+              - name: tmp-volume
+                mountPath: /tmp
               - name: config
                 mountPath: /app/configs
             command: ["/app/app", "-cfg", "/app/configs/histogram.toml"]
       restartPolicy: Always
       volumes:
+          - name: tmp-volume
+            persistentVolumeClaim:
+                claimName: indexer-volume-claim
           - name: config
             configMap:
                 name: indexer-helper-config
