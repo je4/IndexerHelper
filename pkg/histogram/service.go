@@ -112,16 +112,41 @@ func (h *Histogram) Exec(file string, args ...interface{}) (interface{}, error) 
 		if err != nil {
 			return colors, emperror.Wrapf(err, "cannot parse number %s in line %s", countstr, line)
 		}
-		colors[col] += float64(count)/float64(10000)
+		colors[col] += float64(count) / float64(10000)
 	}
 
-	result := make(map[string]float64)
+	/*
+		result := make(map[string]float64)
+		for col, weight := range colors {
+			ok := false
+			for name, hex := range h.colormap {
+				if col == hex {
+					ok = true
+					result[name] = weight
+				}
+			}
+			if !ok {
+				return nil, fmt.Errorf("color %s not in colormap", col)
+			}
+		}
+	*/
+	type rf struct {
+		Name   string  `json:"name"`
+		Code   string  `json:"code"`
+		Weight float64 `json:"weight"`
+	}
+
+	var result []rf
 	for col, weight := range colors {
 		ok := false
 		for name, hex := range h.colormap {
 			if col == hex {
 				ok = true
-				result[name] = weight
+				result = append(result, rf{
+					Name:   name,
+					Code:   hex,
+					Weight: weight,
+				})
 			}
 		}
 		if !ok {
