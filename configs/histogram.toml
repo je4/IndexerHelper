@@ -11,8 +11,8 @@ wsl = true  # true, if executable is within linux subsystem on windows
     convert = "/usr/bin/convert"
 
 [FFMPEG]
-    ffmpeg = "/usr/local/bin/ffmpeg2"
-    ffprobe = "/usr/local/bin/ffprobe2"
+    ffmpeg = "/usr/bin/ffmpeg"
+    ffprobe = "/usr/bin/ffprobe"
 
 [exiftool]
     exiftool = "/usr/bin/exiftool"
@@ -28,12 +28,12 @@ wsl = true  # true, if executable is within linux subsystem on windows
 
 [ValidateAV]
     prefix = "validateav"
-    timeout = "10s"
+    timeout = "300s"
 
 [Histogram]
     prefix = "histogram"
     timeout = "10s"
-    remap = "color.png" # das Bild mit der Zielfarbpalette. Wird erzeugt, falls nicht vorhanden. (Schreibrechte beachten)
+    remap = "/app/colormap/color.png" # das Bild mit der Zielfarbpalette. Wird erzeugt, falls nicht vorhanden. (Schreibrechte beachten)
     colors = 10  # Anzahl der Farben im Histogramm
     maxvalue = 10000
     params = "[[path]] -resize 100x100! -dither Riemersma -colors 10 +dither -remap color.png -format %c histogram:info:"

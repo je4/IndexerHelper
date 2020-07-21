@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: memobase
-  name: indexer-helper-service
+  name: media-indexer-helper-service
   labels:
-    app: indexer-helper-app
+    app: media-indexer-helper-app
 spec:
   ports:
     - port: 8083
   selector:
-    app: indexer-helper-app
+    app: media-indexer-helper-app
     tier: web
   clusterIP: None
