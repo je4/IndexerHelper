@@ -19,6 +19,13 @@ spec:
       containers:
           - name: media-indexer-helper-container
             image: cr.gitlab.switch.ch/memoriav/memobase-2020/services/histogram:latest
+            resources:
+                requests:
+                    cpu: "1"
+                    memory: "2Gi"
+                limits:
+                    cpu: "4"
+                    memory: "8Gi"
             ports:
               - containerPort: 8083
                 name: http
